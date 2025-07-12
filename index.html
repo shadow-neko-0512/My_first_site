@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rock Identifier</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🪨 Rock & Mineral Info Finder</h1>
+
+<div class="filter-section">
+  <input type="text" id="search" placeholder="Search by mineral name..." />
+
+  <select id="colorFilter">
+    <option value="">Filter by Colour</option>
+  </select>
+
+  <select id="reliefFilter">
+    <option value="">Filter by Relief</option>
+  </select>
+
+  <select id="pleoFilter">
+    <option value="">Filter by Pleochroism</option>
+  </select>
+</div>
+
+<table id="results">
+  <thead>
+    <tr id="headerRow"></tr>
+  </thead>
+  <tbody id="dataRows"></tbody>
+</table>
+
+<script>
+let data = [];
+
+async function loadData() {
+  const res = await fetch('rocks.json');
+  data = await res.json();
+  populateFilters();
+  displayData(data);
+}
+
+function populateFilters() {
+  const colorSet = new Set(), reliefSet = new Set(), pleoSet = new Set();
+
+  data.forEach(item => {
+    if (item.Colour) colorSet.add(item.Colour);
+    if (item.Relief) reliefSet.add(item.Relief);
+    if (item.pleochoism) pleoSet.add(item.pleochoism);
+  });
+
+  const colorFilter = document.getElementById('colorFilter');
+  [...colorSet].sort().forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    colorFilter.appendChild(opt);
+  });
+
+  const reliefFilter = document.getElementById('reliefFilter');
+  [...reliefSet].sort().forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    reliefFilter.appendChild(opt);
+  });
+
+  const pleoFilter = document.getElementById('pleoFilter');
+  [...pleoSet].sort().forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    pleoFilter.appendChild(opt);
+  });
+}
+
+function displayData(filtered) {
+  const headerRow = document.getElementById('headerRow');
+  const dataRows = document.getElementById('dataRows');
+  dataRows.innerHTML = "";
+  headerRow.innerHTML = "";
+
+  if (filtered.length === 0) {
+    dataRows.innerHTML = "<tr><td colspan='10'>No results found.</td></tr>";
+    return;
+  }
+
+  const headers = Object.keys(filtered[0]);
+  headers.forEach(key => {
+    const th = document.createElement('th');
+    th.textContent = key;
+    headerRow.appendChild(th);
+  });
+
+  filtered.forEach(item => {
+    const tr = document.createElement('tr');
+    headers.forEach(key => {
+      const td = document.createElement('td');
+      td.textContent = item[key];
+      tr.appendChild(td);
+    });
+    dataRows.appendChild(tr);
+  });
+}
+
+function filterData() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const color = document.getElementById('colorFilter').value;
+  const relief = document.getElementById('reliefFilter').value;
+  const pleo = document.getElementById('pleoFilter').value;
+
+  const filtered = data.filter(item => {
+    return (!search || item.Name.toLowerCase().includes(search)) &&
+           (!color || item.Colour === color) &&
+           (!relief || item.Relief === relief) &&
+           (!pleo || item.pleochoism === pleo);
+  });
+
+  displayData(filtered);
+}
+
+document.getElementById('search').addEventListener('input', filterData);
+document.getElementById('colorFilter').addEventListener('change', filterData);
+document.getElementById('reliefFilter').addEventListener('change', filterData);
+document.getElementById('pleoFilter').addEventListener('change', filterData);
+
+loadData();
+</script>
+
+</body>
+</html>
