@@ -1,0 +1,126 @@
+
+/* Existing animations + cursor enhancements */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Crimson+Text&display=swap');
+
+body {
+  font-family: 'Crimson Text', serif;
+  margin: 0;
+  padding: 20px;
+  background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #e5d3b3;
+  color: #2c1d0b;
+  animation: fadeIn 1.5s ease;
+  cursor: url('https://cur.cursors-4u.net/cursors/cur-11/cur1066.cur'), auto;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  color: #4e342e;
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 0 #fff5e0;
+  animation: floatIn 1.2s ease-out;
+}
+
+input, select {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  max-width: 320px;
+  border: 1px solid #a1887f;
+  background-color: #fef9f4;
+  border-radius: 5px;
+  font-size: 1em;
+  font-family: 'Crimson Text', serif;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  border-color: #6d4c41;
+  outline: none;
+  box-shadow: 0 0 8px #6d4c41;
+  transform: scale(1.02);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 30px;
+  background-color: #fef9f4;
+  border: 2px solid #8d6e63;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  animation: fadeIn 2s ease;
+}
+
+th, td {
+  border: 1px solid #bcaaa4;
+  padding: 10px;
+  text-align: left;
+  font-size: 1em;
+}
+
+th {
+  background-color: #d7ccc8;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  color: #4e342e;
+}
+
+tr {
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+tr::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 236, 179, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+tr:hover::after {
+  opacity: 1;
+}
+
+.filter-section {
+  background: #fdf6e3;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #bca37f;
+  margin-bottom: 30px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: slideUp 1.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes floatIn {
+  from { transform: translateY(-30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  input, select {
+    max-width: 100%;
+  }
+
+  table, th, td {
+    font-size: 0.9em;
+  }
+}
